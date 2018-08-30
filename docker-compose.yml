@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  # mqtt:
+  #   image: eclipse-mosquitto:latest
+  #   restart: always
+  #   ports:
+  #     - "1883:1883"
+  #     - "9001:9001"
+    # volumes:
+    #   - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:rw
+    #   - /mosquitto/data
+    #   - /mosquitto/log
+
+  influxdb:
+    hostname: influxdb
+    image: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    environment:
+      INFLUXDB_DB: iot
+      # INFLUXDB_HTTP_AUTH_ENABLED: "true"
+      INFLUXDB_ADMIN_USER: admin
+      INFLUXDB_ADMIN_PASSWORD: admin
+      INFLUXDB_USER: user
+      INFLUXDB_USER_PASSWORD: user
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ryan2_chang@asus.com
+      PGADMIN_DEFAULT_PASSWORD: asus#1234
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_DB: user
